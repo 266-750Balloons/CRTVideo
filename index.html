@@ -46,12 +46,13 @@
 </head>
 
 <body>
-    <button id="play"></button>
+    <input type="file" accept="video" id="play">
     <video src="./Talking Heads - Once in a Lifetime (Official Video) [5IsSpAOD6K8].mp4" playsinline></video>
     <canvas></canvas>
     <canvas id="canvas2"></canvas>
     <script>
-        document.getElementsByTagName('video')[0].play()
+        var video = document.getElementsByTagName('video')[0];
+        var play = document.getElementById("play");
         var canvas = document.getElementsByTagName("canvas")[0];
         var canvas2 = document.getElementsByTagName("canvas")[1];
         var ctx = canvas.getContext("2d");
@@ -59,7 +60,7 @@
         var scanlineTranslation = 0;
         resizeCanvas();
         window.addEventListener("resize", resizeCanvas);
-        window.addEventListener("mousedown", function() {document.getElementsByTagName('video')[0].play();});
+        play.addEventListener("change", function() {video.src = URL.createObjectURL(play.files[0]); video.play();});
         window.requestAnimationFrame(drawNoise);
         window.requestAnimationFrame(drawScanLines);
 
