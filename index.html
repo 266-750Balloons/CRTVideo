@@ -33,26 +33,36 @@
             width: 100vw;
             filter: blur(2px) saturate(70%);
         }
-        #play {
+        .controls {
             position: absolute;
-            top: 0px;
-            left: 0px;
-            width: 100vw;
-            height: 100vh;
             opacity: 0%;
             z-index: 100;
+        }
+        #play {
+            width: 50vw;
+            height: 100vh;
+            top: 0px;
+            left: 0px;
+        }
+        #pause {
+            top: 0px;
+            right: 0px;
+            width: 50vw;
+            height: 100vh;
         }
     </style>
 </head>
 
 <body>
-    <input type="file" accept="video" id="play">
+    <input type="file" accept="video" id="play" class="controls">
+    <button id="pause" class="controls"></button>
     <video src="./Talking Heads - Once in a Lifetime (Official Video) [5IsSpAOD6K8].mp4" playsinline></video>
     <canvas></canvas>
     <canvas id="canvas2"></canvas>
     <script>
         var video = document.getElementsByTagName('video')[0];
         var play = document.getElementById("play");
+        var pause = document.getElementById("pause");
         var canvas = document.getElementsByTagName("canvas")[0];
         var canvas2 = document.getElementsByTagName("canvas")[1];
         var ctx = canvas.getContext("2d");
@@ -61,6 +71,7 @@
         resizeCanvas();
         window.addEventListener("resize", resizeCanvas);
         play.addEventListener("change", function() {video.src = URL.createObjectURL(play.files[0]); video.play();});
+        pause.addEventListener("click", togglePlay);
         window.requestAnimationFrame(drawNoise);
         window.requestAnimationFrame(drawScanLines);
 
@@ -69,6 +80,13 @@
             canvas.height = Math.round(document.body.clientHeight * 0.4);
             canvas2.width = Math.round(document.body.clientWidth * 0.4);
             canvas2.height = Math.round(document.body.clientHeight * 0.4);
+        }
+        function togglePlay() {
+            if(video.paused) {
+                video.play();
+            } else {
+                video.pause();
+            }
         }
         function drawNoise() {
             var DataArray = new Uint8ClampedArray(canvas.width * canvas.height * 4);
