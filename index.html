@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CRT Fun</title>
+    <meta charset="UTF-8">
+    <style>
+        html,
+        body {
+            margin: 0px;
+            padding: 0px;
+            width: 100%;
+            height: 100;
+            overflow: hidden;
+            background-color: aqua;
+        }
+
+        canvas {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            opacity: 25%;
+            filter: blur(0.1px);
+            pointer-events: none;
+        }
+        #canvas2 {
+            opacity: 100%;
+        }
+        video {
+            height: 100vh;
+            width: 100vw;
+            filter: blur(2px) saturate(70%);
+        }
+        #play {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100vw;
+            height: 100vh;
+            opacity: 0%;
+            z-index: 100;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="play"></button>
+    <video src="./Talking Heads - Once in a Lifetime (Official Video) [5IsSpAOD6K8].mp4" playsinline></video>
+    <canvas></canvas>
+    <canvas id="canvas2"></canvas>
+    <script>
+        document.getElementsByTagName('video')[0].play()
+        var canvas = document.getElementsByTagName("canvas")[0];
+        var canvas2 = document.getElementsByTagName("canvas")[1];
+        var ctx = canvas.getContext("2d");
+        var ctx2 = canvas2.getContext("2d");
+        var scanlineTranslation = 0;
+        resizeCanvas();
+        window.addEventListener("resize", resizeCanvas);
+        window.addEventListener("mousedown", function() {document.getElementsByTagName('video')[0].play();});
+        window.requestAnimationFrame(drawNoise);
+        window.requestAnimationFrame(drawScanLines);
+
+        function resizeCanvas() {
+            canvas.width = Math.round(document.body.clientWidth * 0.4);
+            canvas.height = Math.round(document.body.clientHeight * 0.4);
+            canvas2.width = Math.round(document.body.clientWidth * 0.4);
+            canvas2.height = Math.round(document.body.clientHeight * 0.4);
+        }
+        function drawNoise() {
+            var DataArray = new Uint8ClampedArray(canvas.width * canvas.height * 4);
+            for (var i = 0; i < canvas.width * canvas.height * 4; i++) {
+                if ((i + 1) % 4 !== 0) {
+                    DataArray[i] = Math.floor(Math.random() * 255);
+                } else {
+                    DataArray[i] = 255;
+                }
+            }
+            var noiseMap = new ImageData(DataArray, canvas.width);
+            var optimizedMap = createImageBitmap(noiseMap);
+
+            optimizedMap.then(value => {
+                ctx.drawImage(value, 0, 0);
+                window.requestAnimationFrame(drawNoise);
+            });
+        }
+        function drawScanLines() {
+            ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+            lineFrequency = 10;
+            for(var i = 0; i < canvas2.height; i++) {
+                var shade = Math.cos((i+scanlineTranslation)*lineFrequency)*0.3;
+                ctx2.fillStyle = "rgb(0, 0, 0, "+shade.toString()+")";
+                ctx2.fillRect(0, i, canvas2.width, 1);
+            }
+            scanlineTranslation -= 0.5*(1/lineFrequency);
+            scanlineTranslation = scanlineTranslation%360;
+            window.requestAnimationFrame(drawScanLines);
+        }
+    </script>
+</body>
+
+</html>
