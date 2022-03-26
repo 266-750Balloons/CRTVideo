@@ -5,6 +5,10 @@
     <title>CRT Fun</title>
     <meta charset="UTF-8">
     <style>
+        @font-face {
+            font-family: "VT323";
+            src: url(VT323-Regular.ttf) format("truetype");
+        }
         html,
         body {
             margin: 0px;
@@ -13,6 +17,7 @@
             height: 100;
             overflow: hidden;
             background-color: aqua;
+            font-family: "VT323";
         }
 
         canvas {
@@ -50,23 +55,35 @@
             width: 50vw;
             height: 100vh;
         }
+        h1 {
+            position: absolute;
+            z-index: 0;
+            width: 100vw;
+            height: 100vh;
+            text-align: center;
+            padding-top: 30vh;
+            padding-bottom: 30vh;
+            filter: blur(1.5px);
+            font-size: 54pt;
+        }
     </style>
 </head>
 
 <body>
+    <h1>Press Left Side to Select Video File and Right Side to Toggle Play/Pause</h1>
     <input type="file" accept="video" id="play" class="controls">
     <button id="pause" class="controls"></button>
-    <video src="./Talking Heads - Once in a Lifetime (Official Video) [5IsSpAOD6K8].mp4" playsinline></video>
+    <video src="" playsinline></video>
     <canvas></canvas>
     <canvas id="canvas2"></canvas>
     <script>
-        var video = document.getElementsByTagName('video')[0];
-        var play = document.getElementById("play");
-        var pause = document.getElementById("pause");
-        var canvas = document.getElementsByTagName("canvas")[0];
-        var canvas2 = document.getElementsByTagName("canvas")[1];
-        var ctx = canvas.getContext("2d");
-        var ctx2 = canvas2.getContext("2d");
+        const video = document.getElementsByTagName('video')[0];
+        const play = document.getElementById("play");
+        const pause = document.getElementById("pause");
+        const canvas = document.getElementsByTagName("canvas")[0];
+        const canvas2 = document.getElementsByTagName("canvas")[1];
+        const ctx = canvas.getContext("2d");
+        const ctx2 = canvas2.getContext("2d");
         var scanlineTranslation = 0;
         resizeCanvas();
         window.addEventListener("resize", resizeCanvas);
