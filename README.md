@@ -1,4 +1,4 @@
-sc# CRTVideo
+# CRTVideo
 CRTVideo is a simple HTML5 video player with a CRT filter
 ![Screenshot showing a clip from the music video from Talking Heads' Once in a Lifetime with a CRT filter](Screenshot_2022-03-26_21-26-41.png)
 ## Usage
